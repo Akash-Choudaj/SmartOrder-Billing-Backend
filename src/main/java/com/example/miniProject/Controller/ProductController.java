@@ -44,6 +44,14 @@ public class ProductController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+		Product product = toEntity(productDto);
+		Product saved = productServ.saveProduct(product);
+		return ResponseEntity.ok(toDto(saved));
+	}
+
 	private ProductDto toDto(Product product) {
 		ProductDto dto = new ProductDto();
 		dto.setId(product.getId());
